@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.plavcak.demo</groupId>
+    <artifactId>spring-boot-docker-ready</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>sb-docker-ready-application</module>
+        <module>sb-docker-ready-core</module>
+    </modules>
+
+    <properties>
+        <version.java>1.8</version.java>
+        <version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
+        <version.spring-boot>2.0.4.RELEASE</version.spring-boot>
+        <version.maven-dependency-plugin>3.1.1</version.maven-dependency-plugin>
+        <version.maven-jar-plugin>3.1.0</version.maven-jar-plugin>
+        <build.config.docker-ready>false</build.config.docker-ready>
+        <build.config.spring-boot>true</build.config.spring-boot>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${version.spring-boot}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${version.spring-boot}</version>
+                    <configuration>
+                        <skip>${build.config.docker-ready}</skip>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${version.maven-dependency-plugin}</version>
+                    <configuration>
+                        <skip>${build.config.spring-boot}</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${version.maven-jar-plugin}</version>
+                    <configuration>
+                        <skip>${build.config.spring-boot}</skip>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.maven-compiler-plugin}</version>
+                    <configuration>
+                        <source>${version.java}</source>
+                        <target>${version.java}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>docker-ready</id>
+            <properties>
+                <build.config.docker-ready>true</build.config.docker-ready>
+                <build.config.spring-boot>false</build.config.spring-boot>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

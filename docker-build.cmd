@@ -1,0 +1,1 @@
+ docker build -t sb-docker-ready-application:1.0-SNAPSHOT .
